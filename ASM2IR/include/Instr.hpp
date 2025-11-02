@@ -3,6 +3,7 @@
 #include <inttypes.h>
 #include <unordered_map>
 #include <string>
+#include <cstring>
 
 namespace ASM2IR {
 
@@ -18,9 +19,10 @@ struct Instr {
     };
 
     Opcode opcode;
-    RegIndex rs1;
-    RegIndex rd;
-    RegIndex rs2imm;
+    long long rd;
+    long long rs1;
+    long long rs2imm;
+    long long rs3imm;
 };
 
 struct InstrInfo {
