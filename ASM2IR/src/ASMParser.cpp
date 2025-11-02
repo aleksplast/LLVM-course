@@ -36,9 +36,11 @@ bool AsmParser::find_bbs(std::ifstream &input) {
         switch (op) {
         default:
             if (bb2pc.find(name) != bb2pc.end()) {
+                std::cout << "Label is repeated: " << name << '\n';
                 return false;
             }
             if (pc2bb.find(pc) != pc2bb.end()) {
+                std::cout << "Two labels at the same line\n";
                 return false;
             }
             bb2pc[name] = pc;

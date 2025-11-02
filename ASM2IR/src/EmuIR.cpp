@@ -5,6 +5,7 @@
 #include <llvm-18/llvm/ExecutionEngine/ExecutionEngine.h>
 #include <llvm-18/llvm/ExecutionEngine/GenericValue.h>
 #include <llvm-18/llvm/Transforms/Utils/Cloning.h>
+#include <llvm-18/llvm/IR/Verifier.h>
 
 extern "C" {
     void sim_init();
@@ -15,26 +16,26 @@ namespace ASM2IR {
 
 void EmuIRGen::build_ir(const AsmParser &parser) {
     auto voidType = Type::getVoidTy(Context);
-    auto int32Type = Type::getInt32Ty(Context);
+    auto int64Type = Type::getInt64Ty(Context);
 
     //[32 x i32] reg_file = {0, 0, 0, 0}
-    ArrayType *regFileType = ArrayType::get(int32Type, CPU::kRegNum);
+    ArrayType *regFileType = ArrayType::get(int64Type, CPU::kRegNum);
     IRModule->getOrInsertGlobal("reg_file", regFileType);
-    auto regFile = IRModule->getNamedGlobal("reg_file");
+    regFile = IRModule->getNamedGlobal("reg_file");
 
     FunctionType *FuncType = FunctionType::get(voidType, false);
     Function *AppFunc = Function::Create(FuncType, Function::ExternalLinkage, kAppName, *IRModule);
 
      // Functions types
     FunctionType *voidFuncType = FunctionType::get(voidType, false);
-    ArrayRef<Type *> int32x3Types = {int32Type, int32Type, int32Type};
-    FunctionType *int32x3FuncType = FunctionType::get(voidType, int32x3Types, false);
+    ArrayRef<Type *> int32x4Types = {int64Type, int64Type, int64Type, int64Type};
+    FunctionType *int32x4FuncType = FunctionType::get(voidType, int32x4Types, false);
 
     // Functions
 #define ISA(Opcode_, Name_, SkipArgs_, ReadArgs_, WriteArgs_, Execute_,        \
              IRGenExecute_)                                                    \
   FunctionCallee Callee##Name_ =                                               \
-      IRModule->getOrInsertFunction("do_" #Name_, int32x3FuncType);
+      IRModule->getOrInsertFunction("do_" #Name_, int32x4FuncType);
 #include "ISA.hpp"
 #undef ISA
 
@@ -49,10 +50,11 @@ void EmuIRGen::build_ir(const AsmParser &parser) {
     for (const Instr &instr : parser.insns) {
         std::cout << "IN IR GEN: instr name = " << parser.instr_info.op2name.at(instr.opcode) << '\n';
         std::cout << "IN IR GEN: rs2imm = " << instr.rs2imm << '\n';
-        Value *arg1 = Builder.getInt32(instr.rd);
-        Value *arg2 = Builder.getInt32(instr.rs1);
-        Value *arg3 = Builder.getInt32(instr.rs2imm);
-        Value *args[] = {arg1, arg2, arg3};
+        Value *arg1 = Builder.getInt64(instr.rd);
+        Value *arg2 = Builder.getInt64(instr.rs1);
+        Value *arg3 = Builder.getInt64(instr.rs2imm);
+        Value *arg4 = Builder.getInt64(instr.rs3imm);
+        Value *args[] = {arg1, arg2, arg3, arg4};
         switch (instr.opcode) {
         default:
         break;
@@ -75,11 +77,9 @@ void EmuIRGen::build_ir(const AsmParser &parser) {
         break;
         case Instr::BR_COND:
             arg1 = Builder.CreateConstGEP2_32(regFileType, regFile, 0, instr.rd);
-            arg2 = Builder.CreateTrunc(Builder.CreateLoad(int32Type, arg1),
+            arg2 = Builder.CreateTrunc(Builder.CreateLoad(int64Type, arg1),
                                         Builder.getInt1Ty());
-            if (BB != BBMap.end()) {
-                Builder.CreateCondBr(arg2, BBMap[instr.rs2imm], BB->second);
-            }
+            Builder.CreateCondBr(arg2, BBMap[instr.rs2imm], BBMap[instr.rs3imm]);
         break;
         case Instr::BRANCH:
             Builder.CreateBr(BBMap[instr.rs2imm]);
@@ -96,9 +96,10 @@ void EmuIRGen::build_ir(const AsmParser &parser) {
 
 void EmuIRGen::exec(CPU &cpu) {
     IRModule->dump();
+    bool verif = verifyModule(*IRModule, &outs());
+    outs() << "[VERIFICATION] " << (verif ? "FAIL\n\n" : "OK\n\n");
     auto ExecModule = CloneModule(*IRModule);
     auto *App = ExecModule->getFunction(kAppName);
-
 
     LLVMInitializeNativeTarget();
     LLVMInitializeNativeAsmPrinter();
@@ -114,6 +115,7 @@ void EmuIRGen::exec(CPU &cpu) {
     return nullptr;
   });
 
+    ee->addGlobalMapping(regFile, (void *)cpu.reg_file);
     ee->finalizeObject();
 
     CPU::set_cpu(&cpu);
