@@ -1,6 +1,6 @@
 target_compile_features(asm2ir PUBLIC cxx_std_20)
 target_include_directories(asm2ir PUBLIC ${PROJECT_SOURCE_DIR}/include)
-target_sources(asm2ir PUBLIC CPU.cpp sim.c IRGen.cpp ASMParser.cpp EmuIR.cpp InstrInfo.cpp main.cpp)
+target_sources(asm2ir PUBLIC CPU.cpp sim.c IRGen.cpp ASMParser.cpp EmuIR.cpp FullIR.cpp InstrInfo.cpp main.cpp)
 
 set(LLVM_LINK_COMPONENTS
   BitWriter

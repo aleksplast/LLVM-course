@@ -41,15 +41,12 @@ void EmuIRGen::build_ir(const AsmParser &parser) {
 
     std::unordered_map<uint32_t, BasicBlock *> BBMap;
     for (auto &bb_name : parser.bb_names) {
-        std::cout << "Add bb at pc = " << parser.bb2pc.at(bb_name) << " with name = " << bb_name << '\n';
         BBMap[parser.bb2pc.at(bb_name)] = BasicBlock::Create(Context, bb_name, AppFunc);
     }
 
     uint32_t PC = 0;
     Builder.SetInsertPoint(BBMap[0]);
     for (const Instr &instr : parser.insns) {
-        std::cout << "IN IR GEN: instr name = " << parser.instr_info.op2name.at(instr.opcode) << '\n';
-        std::cout << "IN IR GEN: rs2imm = " << instr.rs2imm << '\n';
         Value *arg1 = Builder.getInt64(instr.rd);
         Value *arg2 = Builder.getInt64(instr.rs1);
         Value *arg3 = Builder.getInt64(instr.rs2imm);
@@ -97,7 +94,6 @@ void EmuIRGen::build_ir(const AsmParser &parser) {
 void EmuIRGen::exec(CPU &cpu) {
     IRModule->dump();
     bool verif = verifyModule(*IRModule, &outs());
-    outs() << "[VERIFICATION] " << (verif ? "FAIL\n\n" : "OK\n\n");
     auto ExecModule = CloneModule(*IRModule);
     auto *App = ExecModule->getFunction(kAppName);
 

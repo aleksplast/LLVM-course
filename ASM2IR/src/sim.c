@@ -64,3 +64,27 @@ void screen_put_pixel(int x, int y, int argb) {
 int sim_rand() {
     return rand();
 }
+
+void dump_grid(int *grid_ptr) {
+    printf("grid ptr = %p", grid_ptr);
+    for (int i = 0; i < X_SIZE; ++i) {
+        for (int j = 0; j < Y_SIZE; ++j) {
+            printf("%d ", grid_ptr[i * Y_SIZE + j]);
+        }
+        printf("\n");
+    }
+    printf("\n\n\n");
+}
+
+void dump_neighbours(int *neigh_ptr, int x, int y) {
+    printf("neighb ptr = %p", neigh_ptr);
+    printf("Neighbours of (%d, %d):\n", x, y);
+    for (int i = 0; i < 8; ++i) {
+        printf("(%d, %d), ", neigh_ptr[i * 2], neigh_ptr[i * 2 + 1]);
+    }
+    printf("\n");
+}
+
+void dump_reg(long long reg_val) {
+    printf("reg_val = %llu\n", reg_val);
+}

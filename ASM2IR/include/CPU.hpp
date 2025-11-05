@@ -8,6 +8,9 @@ extern "C" {
   int sim_rand();
   void screen_put_pixel(int x, int y, int argb);
   void screen_flush();
+  void dump_grid(int *grid_ptr);
+  void dump_neighbours(int *neigh_ptr, int x, int y);
+  void dump_reg(long long reg_val);
 }
 
 namespace ASM2IR {
@@ -22,10 +25,10 @@ struct CPU final {
   static CPU *cpu;
   static void set_cpu(CPU *c) { cpu = c; }
   void dump_cpu_state() const;
-#define ISA(Opcode_, Name_, SkipArgs_, ReadArgs_, WriteArgs_, Execute_,        \
-             IRGenExecute_)                                                    \
+#define ISA(Opcode_, Name_, SkipArgs_, ReadArgs_, WriteArgs_, Execute_,                             \
+             IRGenExecute_)                                                                         \
 static void do_##Name_(long long rd, long long rs1, long long rs2imm, long long rs3imm) {           \
-    Execute_;                                                                  \
+    Execute_;                                                                                       \
 }
 #include "ISA.hpp"
 #undef ISA

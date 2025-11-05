@@ -11,6 +11,7 @@ label_7
     BRANCH label_31
 label_9
     MOVi x8 0
+    SCREEN_FLUSH
     NEIGHBOURS x0
     BRANCH label_41
 label_28
@@ -19,13 +20,10 @@ label_28
 label_31
     SIM_RAND x4
     SREMi x4 x4 3
-    EQi x4 x4 0
+    CMP_EQ x4 x4 0
     SET_CELL x1 x3 x5 x4
     INC_EQ x7 x5 900
     BR_COND x7 label_28 label_31
-label_40
-    LIFETIME_END x1
-    EXIT
 label_41
     MOVi x30 0
     LIFETIME_START x2
@@ -38,7 +36,7 @@ label_43
     MOVi x13 0
     BRANCH label_58
 label_55
-    EQi x12 x11 1000
+    CMP_EQ x12 x11 1000
     MOV x30 x11
     BR_COND x12 label_57 label_43
 label_57
@@ -147,3 +145,6 @@ label_139
     SCREEN_PUT_PIXEL x25 x26 x28
     INC_EQ x20, x26, 900
     BR_COND x20 label_124 label_127
+label_40
+    LIFETIME_END x1
+    EXIT

@@ -10,5 +10,8 @@ int sim_rand();
 void app();
 void screen_put_pixel(int x, int y, int argb);
 void screen_flush();
+void dump_grid(int *grid_ptr);
+void dump_reg(long long reg_val);
+void dump_neighbours(int *neigh_ptr, int x, int y);
 
 #endif // APP_H
