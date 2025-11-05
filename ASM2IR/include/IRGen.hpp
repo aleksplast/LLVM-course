@@ -26,12 +26,18 @@ protected:
     static const constexpr std::string_view kSimRandName = "sim_rand";
     static const constexpr std::string_view kScreenFlushName = "screen_flush";
     static const constexpr std::string_view kScreenPutPixelName = "screen_put_pixel";
+    static const constexpr std::string_view kDumpGridName = "dump_grid";
+    static const constexpr std::string_view kDumpNeighboursName = "dump_neighbours";
+    static const constexpr std::string_view kDumpRegName = "dump_reg";
     static const constexpr std::string_view kAppName = "app";
 
 protected:
     Function *declareSimRand();
     Function *declareScreenFlush();
     Function *declareScreenPutPixel();
+    Function *declareDumpGrid();
+    Function *declareDumpNeighbours();
+    Function *declareDumpReg();
 
 protected:
     LLVMContext Context;

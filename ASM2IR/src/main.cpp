@@ -5,7 +5,7 @@
 #include "ASMParser.hpp"
 #include "CPU.hpp"
 #include "EmuIR.hpp"
-// #include "FullIR.hpp"
+#include "FullIR.hpp"
 #include "IRGen.hpp"
 
 int main(int argc, char **argv) {
@@ -17,10 +17,10 @@ int main(int argc, char **argv) {
     std::filesystem::path ir_out_path;
     app.add_option("--o", ir_out_path, "IR out path");
 
-    bool ir_emulate = true;
+    bool ir_emulate = false;
     app.add_flag("--ir-emulate", ir_emulate, "Should ir be emulated");
 
-    bool ir_only;
+    bool ir_only = false;
     app.add_flag("--ir-only", ir_only, "Should it be full functional ir");
 
     CLI11_PARSE(app, argc, argv);
@@ -31,7 +31,7 @@ int main(int argc, char **argv) {
     if (ir_emulate) {
         gen = std::make_unique<ASM2IR::EmuIRGen>();
     } else {
-        // gen = std::make_unique<ASM2IR::FullIRGen>();
+        gen = std::make_unique<ASM2IR::FullIRGen>();
     }
 
     ASM2IR::CPU cpu;

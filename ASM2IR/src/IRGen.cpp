@@ -33,4 +33,34 @@ Function *IRGen::declareScreenPutPixel() {
     return ScreenPutPixel;
 }
 
+Function *IRGen::declareDumpGrid() {
+    assert(IRModule);
+
+    ArrayRef<Type *> ArgTypes = {Builder.getInt32Ty()->getPointerTo()};
+    FunctionType *FuncType = FunctionType::get(Builder.getVoidTy(), ArgTypes, false);
+    Function *DumpGrid = Function::Create(FuncType, Function::ExternalLinkage, kDumpGridName, *IRModule);
+
+    return DumpGrid;
+}
+
+Function *IRGen::declareDumpNeighbours() {
+    assert(IRModule);
+
+    ArrayRef<Type *> ArgTypes = {Builder.getInt32Ty()->getPointerTo(), Builder.getInt32Ty(), Builder.getInt32Ty()};
+    FunctionType *FuncType = FunctionType::get(Builder.getVoidTy(), ArgTypes, false);
+    Function *DumpNeighbours = Function::Create(FuncType, Function::ExternalLinkage, kDumpNeighboursName, *IRModule);
+
+    return DumpNeighbours;
+}
+
+Function *IRGen::declareDumpReg() {
+    assert(IRModule);
+
+    ArrayRef<Type *> ArgTypes = {Builder.getInt64Ty()};
+    FunctionType *FuncType = FunctionType::get(Builder.getVoidTy(), ArgTypes, false);
+    Function *DumpReg = Function::Create(FuncType, Function::ExternalLinkage, kDumpRegName, *IRModule);
+
+    return DumpReg;
+}
+
 } // namespace ASM2IR

@@ -8,9 +8,7 @@ namespace ASM2IR {
 AsmParser::AsmParser(const std::filesystem::path &asm_path) {
     std::ifstream input{asm_path};
 
-    std::cout << "asm_path = " << asm_path << '\n';
     if (!input.is_open()) {
-        std::cout << "couldnt open file\n";
         return;
     }
 
@@ -30,17 +28,13 @@ bool AsmParser::find_bbs(std::ifstream &input) {
 
     while (input >> name) {
         Opcode op = instr_info.get_opcode(name);
-        std::cout << "Name shi " << name << '\n';
-        std::cout << "Opcode shi " << op << '\n';
 
         switch (op) {
         default:
             if (bb2pc.find(name) != bb2pc.end()) {
-                std::cout << "Label is repeated: " << name << '\n';
                 return false;
             }
             if (pc2bb.find(pc) != pc2bb.end()) {
-                std::cout << "Two labels at the same line\n";
                 return false;
             }
             bb2pc[name] = pc;
@@ -69,7 +63,6 @@ bool AsmParser::read_insns(std::ifstream &input) {
         Opcode op = instr_info.get_opcode(name);
         Instr instr;
         instr.opcode = op;
-        std::cout << "instr name is " << name << '\n';
 
         switch (op) {
         default:
@@ -85,7 +78,6 @@ bool AsmParser::read_insns(std::ifstream &input) {
 #include "ISA.hpp"
 #undef ISA
         }
-        std::cout << "pushing instruction\n";
         insns.push_back(instr);
     }
 

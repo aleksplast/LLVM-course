@@ -2,7 +2,7 @@
 
 #include "IRGen.hpp"
 #include "CPU.hpp"
-#include <llvm-14/llvm/IR/GlobalVariable.h>
+#include <llvm-18/llvm/IR/GlobalVariable.h>
 
 namespace ASM2IR {
 
