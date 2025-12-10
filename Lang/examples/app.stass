@@ -1,0 +1,200 @@
+katka get_cell_color podrubai cell_val ofai
+zdarova
+    karta cherny stati 0 krasivo
+    karta zeleniy stati 65280 voprosi
+    karta krasniy stati 16711680 chat
+    karta siniy stati 255 krasivo
+    karta beliy stati 16777215 chat
+
+    vin podrubai cell_val top3 0 ofai
+    zdarova
+        vylet cherny chat
+    poka
+    vinluz podrubai cell_val top1 1 ofai
+    zdarova
+        vylet zeleniy chat
+    poka
+    vinluz podrubai cell_val top1 2 ofai
+    zdarova
+        vylet siniy voprosi
+    poka
+    vinluz podrubai cell_val top1 3 ofai
+    zdarova
+        vylet krasniy krasivo
+    poka
+    vinluz podrubai cell_val top5 4 ofai
+    zdarova
+        vylet beliy chat
+    poka
+
+    vylet cherny voprosi
+poka
+
+katka app podrubai ofai
+zdarova
+    vysadka grid parni 1000 goyda bonk 900 ravanda chat
+
+    karta x_idx stati 0 krasivo
+    karta y_idx stati 0 voprosi
+
+    regat podrubai x_idx top4 1000 ofai
+    zdarova
+        y_idx stati 0 voprosi
+
+        regat podrubai y_idx top4 900 ofai
+        zdarova
+            grid parni x_idx goyda bonk y_idx ravanda stati sim_rand podrubai ofai braza 3 krasivo
+            y_idx stati y_idx baff 1 voprosi
+        poka
+
+        x_idx stati x_idx baff 1 chat
+    poka
+
+    karta shag stati 0 voprosi
+    vysadka new_grid parni 1000 goyda bonk 900 ravanda chat
+
+    regat podrubai shag top4 10 ofai
+    zdarova
+        x_idx stati 0 krasivo
+        y_idx stati 0 voprosi
+
+        regat podrubai x_idx top4 1000 ofai
+        zdarova
+            y_idx stati 0 voprosi
+
+            regat podrubai y_idx top4 900 ofai
+            zdarova
+                new_grid parni x_idx goyda bonk y_idx ravanda stati grid parni x_idx goyda bonk y_idx ravanda krasivo
+                y_idx stati y_idx baff 1 voprosi
+            poka
+
+            x_idx stati x_idx baff 1 chat
+        poka
+
+        x_idx stati 0 krasivo
+        y_idx stati 0 voprosi
+
+        regat podrubai x_idx top4 1000 ofai
+        zdarova
+            y_idx stati 0 voprosi
+
+            regat podrubai y_idx top4 900 ofai
+            zdarova
+                karta cell stati grid parni x_idx goyda bonk y_idx ravanda krasivo
+                karta alive_num stati 0 voprosi
+
+                vysadka sosedi parni 8 goyda bonk 2 ravanda voprosi
+                sosedi parni 0 goyda bonk 0 ravanda stati x_idx damag 1 krasivo
+                sosedi parni 0 goyda bonk 1 ravanda stati y_idx damag 1 krasivo
+                sosedi parni 1 goyda bonk 0 ravanda stati x_idx damag 1 krasivo
+                sosedi parni 1 goyda bonk 1 ravanda stati y_idx krasivo
+                sosedi parni 2 goyda bonk 0 ravanda stati x_idx damag 1 krasivo
+                sosedi parni 2 goyda bonk 1 ravanda stati y_idx baff 1 krasivo
+                sosedi parni 3 goyda bonk 0 ravanda stati x_idx krasivo
+                sosedi parni 3 goyda bonk 1 ravanda stati y_idx damag 1 krasivo
+                sosedi parni 4 goyda bonk 1 ravanda stati x_idx krasivo
+                sosedi parni 4 goyda bonk 0 ravanda stati y_idx baff 1 krasivo
+                sosedi parni 5 goyda bonk 0 ravanda stati x_idx baff 1 krasivo
+                sosedi parni 5 goyda bonk 1 ravanda stati y_idx damag 1 krasivo
+                sosedi parni 6 goyda bonk 0 ravanda stati x_idx baff 1 krasivo
+                sosedi parni 6 goyda bonk 1 ravanda stati y_idx krasivo
+                sosedi parni 7 goyda bonk 0 ravanda stati x_idx baff 1 krasivo
+                sosedi parni 7 goyda bonk 1 ravanda stati y_idx baff 1 krasivo
+
+                karta sosed_idx stati 0 voprosi
+                regat podrubai sosed_idx top4 8 ofai
+                zdarova
+                    karta sosed_x stati sosedi parni sosed_idx goyda bonk 0 ravanda chat
+                    karta sosed_y stati sosedi parni sosed_idx goyda bonk 1 ravanda krasivo
+
+                    vin podrubai sosed_x top5 0 ofai
+                    zdarova
+                        vin podrubai sosed_x top4 1000 ofai
+                        zdarova
+                            vin podrubai sosed_y top5 0 ofai
+                            zdarova
+                                vin podrubai sosed_y top4 900 ofai
+                                zdarova
+                                    karta sosed_cell stati grid parni sosed_x goyda bonk sosed_y ravanda krasivo
+                                    vin podrubai sosed_cell top6 0 ofai
+                                    zdarova
+                                        alive_num stati alive_num baff 1 chat
+                                    poka
+                                poka
+                            poka
+                        poka
+                    poka
+
+                    sosed_idx stati sosed_idx baff 1 krasivo
+                poka
+
+                vin podrubai cell top6 0 ofai
+                zdarova
+                    vin podrubai alive_num top4 2 ofai
+                    zdarova
+                        new_grid parni x_idx goyda bonk y_idx ravanda stati 0 voprosi
+                    poka
+                    vinluz podrubai alive_num top1 3 ofai
+                    zdarova
+                        new_grid parni x_idx goyda bonk y_idx ravanda stati cell baff 1 voprosi
+                    poka
+                    vinluz podrubai alive_num top1 2 ofai
+                    zdarova
+                        new_grid parni x_idx goyda bonk y_idx ravanda stati cell baff 1 voprosi
+                    poka
+                    vinluz podrubai alive_num top6 3 ofai
+                    zdarova
+                        new_grid parni x_idx goyda bonk y_idx ravanda stati 0 voprosi
+                    poka
+                poka
+                vinluz podrubai alive_num top1 3 ofai
+                zdarova
+                    new_grid parni x_idx goyda bonk y_idx ravanda stati 1 voprosi
+                poka
+
+                y_idx stati y_idx baff 1 voprosi
+            poka
+
+            x_idx stati x_idx baff 1 chat
+        poka
+
+        x_idx stati 0 krasivo
+        y_idx stati 0 voprosi
+
+        regat podrubai x_idx top4 1000 ofai
+        zdarova
+            y_idx stati 0 voprosi
+
+            regat podrubai y_idx top4 900 ofai
+            zdarova
+                grid parni x_idx goyda bonk y_idx ravanda stati new_grid parni x_idx goyda bonk y_idx ravanda krasivo
+                y_idx stati y_idx baff 1 voprosi
+            poka
+
+            x_idx stati x_idx baff 1 chat
+        poka
+
+        x_idx stati 0 krasivo
+        y_idx stati 0 voprosi
+
+        regat podrubai x_idx top4 1000 ofai
+        zdarova
+            y_idx stati 0 voprosi
+
+            regat podrubai y_idx top4 900 ofai
+            zdarova
+                karta tsvet stati get_cell_color podrubai grid parni x_idx goyda bonk y_idx ravanda ofai voprosi
+                screen_put_pixel podrubai x_idx y_idx tsvet ofai krasivo
+                y_idx stati y_idx baff 1 voprosi
+            poka
+
+            x_idx stati x_idx baff 1 chat
+        poka
+
+        screen_flush podrubai ofai chat
+
+        shag stati shag baff 1 chat
+    poka
+
+    vylet 0 chat
+poka
