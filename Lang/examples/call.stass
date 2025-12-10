@@ -1,0 +1,21 @@
+katka test podrubai gerr ofai
+zdarova
+    karta res stati gerr baff 5 voprosi
+    vylet res chat
+poka
+
+katka app podrubai ofai
+zdarova
+    karta res stati 1 chat
+    karta gerr stati 0 chat
+    vin podrubai gerr top4 1 ofai
+    zdarova
+        res stati 120 chat
+    poka
+    vinluz podrubai gerr top6 1 ofai
+    zdarova
+        res stati 100 chat
+    poka
+
+    vylet test podrubai res ofai krasivo
+poka
