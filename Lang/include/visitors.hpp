@@ -9,6 +9,7 @@
 #include "llvm-18/llvm/IR/LLVMContext.h"
 #include "llvm-18/llvm/IR/Module.h"
 #include "llvm-18/llvm/IR/Verifier.h"
+#include <llvm-18/llvm/IR/DerivedTypes.h>
 #include <utility>
 #include <vector>
 #include <map>
@@ -95,20 +96,61 @@ struct TreeLLVMWalker : public SilverLangVisitor {
   }
 
   void regGraphicFuncsIntr() {
+    auto *voidTy = llvm::Type::getVoidTy(*ctxLLVM);
+
     {
-      FunctionType *FuncType = FunctionType::get(builder->getInt32Ty(), true);
-      Function *SimRand = Function::Create(FuncType, Function::ExternalLinkage, "sim_rand", module);
+      auto *screenPutPixelIntrTy =
+          llvm::FunctionType::get(voidType, {int32Type, int32Type, int32Type}, false);
+      FunctionCallee screenPutPixelIntr =
+          module->getOrInsertFunction("llvm.riscvivii.putpixel", screenPutPixelIntrTy);
+
+      auto *screenPutPixelTy =
+          llvm::FunctionType::get(int32Type, {int32Type, int32Type, int32Type}, false);
+      Function *screenPutPixelFunc =
+      llvm::Function::Create(screenPutPixelTy, llvm::GlobalValue::ExternalLinkage,
+                            "screen_put_pixel", module);
+      builder->SetInsertPoint(
+          BasicBlock::Create(*ctxLLVM, "entry", screenPutPixelFunc));
+      // call void @llvm.sim.putpixel(i32 %0, i32 %1, i32 %2)
+      builder->CreateCall(screenPutPixelIntr,
+                          {screenPutPixelFunc->getArg(0), screenPutPixelFunc->getArg(1),
+                          screenPutPixelFunc->getArg(2)});
+      // ret i32 0
+      builder->CreateRet(builder->getInt32(0));
     }
 
     {
-      FunctionType *FuncType = FunctionType::get(builder->getVoidTy(), true);
-      Function *ScreenFlush = Function::Create(FuncType, Function::ExternalLinkage, "screen_flush", module);
+      auto *screenFlushIntrTy = llvm::FunctionType::get(voidType, {}, false);
+      FunctionCallee screenFlushIntr =
+          module->getOrInsertFunction("llvm.riscvivii.flush", screenFlushIntrTy);
+
+      auto *screenFlushTy = llvm::FunctionType::get(int32Type, {}, false);
+      Function *screenFlushFunc =
+      llvm::Function::Create(screenFlushTy, llvm::GlobalValue::ExternalLinkage,
+                            "screen_flush", module);
+      builder->SetInsertPoint(
+          BasicBlock::Create(*ctxLLVM, "entry", screenFlushFunc));
+      // call void @llvm.riscvivii.flush()
+      builder->CreateCall(screenFlushIntr);
+      // ret i32 0
+      builder->CreateRet(builder->getInt32(0));
     }
 
     {
-      ArrayRef<Type *> ArgTypes = {builder->getInt32Ty(), builder->getInt32Ty(), builder->getInt32Ty()};
-      FunctionType *FuncType = FunctionType::get(builder->getVoidTy(), ArgTypes, false);
-      Function *ScreenPutPixel = Function::Create(FuncType, Function::ExternalLinkage, "screen_put_pixel", module);
+      auto *simRandIntrTy = llvm::FunctionType::get(int32Type, {}, false);
+      FunctionCallee simRandIntr =
+          module->getOrInsertFunction("llvm.riscvivii.simrand", simRandIntrTy);
+
+
+      auto *simRandTy = llvm::FunctionType::get(int32Type, {}, false);
+      Function *simRandFunc =
+      llvm::Function::Create(simRandTy, llvm::GlobalValue::ExternalLinkage,
+                            "sim_rand", module);
+      builder->SetInsertPoint(
+          BasicBlock::Create(*ctxLLVM, "entry", simRandFunc));
+      // call void @llvm.riscvivii.simrand()
+      // ret i32 0
+      builder->CreateRet(builder->CreateCall(simRandIntr));
     }
   }
 
