@@ -1,386 +1,331 @@
 ; ModuleID = 'app.c'
 source_filename = "app.c"
-target datalayout = "e-m:e-p270:32:32-p271:32:32-p272:64:64-i64:64-f80:128-n8:16:32:64-S128"
-target triple = "x86_64-pc-linux-gnu"
+target datalayout = "e-m:e-p:32:32-i8:8:32-i16:16:32-i64:64-n32"
+target triple = "riscvivii"
 
 @switch.table.app = private unnamed_addr constant [3 x i32] [i32 -16711936, i32 -16776961, i32 -65536], align 4
 
-; Function Attrs: nofree nosync nounwind readonly uwtable
-define dso_local i32 @get_alive_neighbours([1000 x [900 x i32]]* nocapture noundef readonly %0, i32 noundef %1, i32 noundef %2) local_unnamed_addr #0 {
-  %4 = alloca [8 x [2 x i32]], align 16
-  %5 = bitcast [8 x [2 x i32]]* %4 to i8*
-  call void @llvm.lifetime.start.p0i8(i64 64, i8* nonnull %5) #7
-  %6 = getelementptr inbounds [8 x [2 x i32]], [8 x [2 x i32]]* %4, i64 0, i64 0, i64 0
-  %7 = add nsw i32 %1, -1
-  store i32 %7, i32* %6, align 16, !tbaa !5
-  %8 = getelementptr inbounds [8 x [2 x i32]], [8 x [2 x i32]]* %4, i64 0, i64 0, i64 1
-  %9 = add nsw i32 %2, -1
-  store i32 %9, i32* %8, align 4, !tbaa !5
-  %10 = getelementptr inbounds [8 x [2 x i32]], [8 x [2 x i32]]* %4, i64 0, i64 1, i64 0
-  store i32 %7, i32* %10, align 8, !tbaa !5
-  %11 = getelementptr inbounds [8 x [2 x i32]], [8 x [2 x i32]]* %4, i64 0, i64 1, i64 1
-  store i32 %2, i32* %11, align 4, !tbaa !5
-  %12 = getelementptr inbounds [8 x [2 x i32]], [8 x [2 x i32]]* %4, i64 0, i64 2, i64 0
-  store i32 %7, i32* %12, align 16, !tbaa !5
-  %13 = getelementptr inbounds [8 x [2 x i32]], [8 x [2 x i32]]* %4, i64 0, i64 2, i64 1
-  %14 = add nsw i32 %2, 1
-  store i32 %14, i32* %13, align 4, !tbaa !5
-  %15 = getelementptr inbounds [8 x [2 x i32]], [8 x [2 x i32]]* %4, i64 0, i64 3, i64 0
-  store i32 %1, i32* %15, align 8, !tbaa !5
-  %16 = getelementptr inbounds [8 x [2 x i32]], [8 x [2 x i32]]* %4, i64 0, i64 3, i64 1
-  store i32 %9, i32* %16, align 4, !tbaa !5
-  %17 = getelementptr inbounds [8 x [2 x i32]], [8 x [2 x i32]]* %4, i64 0, i64 4, i64 0
-  store i32 %1, i32* %17, align 16, !tbaa !5
-  %18 = getelementptr inbounds [8 x [2 x i32]], [8 x [2 x i32]]* %4, i64 0, i64 4, i64 1
-  store i32 %14, i32* %18, align 4, !tbaa !5
-  %19 = getelementptr inbounds [8 x [2 x i32]], [8 x [2 x i32]]* %4, i64 0, i64 5, i64 0
-  %20 = add nsw i32 %1, 1
-  store i32 %20, i32* %19, align 8, !tbaa !5
-  %21 = getelementptr inbounds [8 x [2 x i32]], [8 x [2 x i32]]* %4, i64 0, i64 5, i64 1
-  store i32 %9, i32* %21, align 4, !tbaa !5
-  %22 = getelementptr inbounds [8 x [2 x i32]], [8 x [2 x i32]]* %4, i64 0, i64 6, i64 0
-  store i32 %20, i32* %22, align 16, !tbaa !5
-  %23 = getelementptr inbounds [8 x [2 x i32]], [8 x [2 x i32]]* %4, i64 0, i64 6, i64 1
-  store i32 %2, i32* %23, align 4, !tbaa !5
-  %24 = getelementptr inbounds [8 x [2 x i32]], [8 x [2 x i32]]* %4, i64 0, i64 7, i64 0
-  store i32 %20, i32* %24, align 8, !tbaa !5
-  %25 = getelementptr inbounds [8 x [2 x i32]], [8 x [2 x i32]]* %4, i64 0, i64 7, i64 1
-  store i32 %14, i32* %25, align 4, !tbaa !5
-  br label %27
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(argmem: read)
+define dso_local range(i32 0, 9) i32 @get_alive_neighbours(ptr nocapture noundef readonly %grid, i32 noundef %x, i32 noundef %y) local_unnamed_addr #0 {
+entry:
+  %sub = add nsw i32 %x, -1
+  %sub1 = add nsw i32 %y, -1
+  %add = add nsw i32 %y, 1
+  %add15 = add nsw i32 %x, 1
+  %or.cond = icmp ult i32 %sub, 1000
+  %0 = icmp ult i32 %sub1, 900
+  %or.cond39 = select i1 %or.cond, i1 %0, i1 false
+  br i1 %or.cond39, label %if.then, label %if.end
 
-26:                                               ; preds = %47
-  call void @llvm.lifetime.end.p0i8(i64 64, i8* nonnull %5) #7
-  ret i32 %48
+if.then:                                          ; preds = %entry
+  %arrayidx35 = getelementptr inbounds nuw [1000 x [900 x i32]], ptr %grid, i32 0, i32 %sub, i32 %sub1
+  %1 = load i32, ptr %arrayidx35, align 4, !tbaa !3
+  %tobool = icmp ne i32 %1, 0
+  %lnot.ext = zext i1 %tobool to i32
+  br label %if.end
 
-27:                                               ; preds = %3, %47
-  %28 = phi i64 [ 0, %3 ], [ %49, %47 ]
-  %29 = phi i32 [ 0, %3 ], [ %48, %47 ]
-  %30 = getelementptr inbounds [8 x [2 x i32]], [8 x [2 x i32]]* %4, i64 0, i64 %28, i64 0
-  %31 = load i32, i32* %30, align 8, !tbaa !5
-  %32 = getelementptr inbounds [8 x [2 x i32]], [8 x [2 x i32]]* %4, i64 0, i64 %28, i64 1
-  %33 = load i32, i32* %32, align 4, !tbaa !5
-  %34 = icmp ult i32 %31, 1000
-  %35 = icmp sgt i32 %33, -1
-  %36 = select i1 %34, i1 %35, i1 false
-  %37 = icmp slt i32 %33, 900
-  %38 = select i1 %36, i1 %37, i1 false
-  br i1 %38, label %39, label %47
+if.end:                                           ; preds = %if.then, %entry
+  %alive_num.1 = phi i32 [ %lnot.ext, %if.then ], [ 0, %entry ]
+  %2 = icmp ult i32 %y, 900
+  %or.cond39.1 = and i1 %or.cond, %2
+  br i1 %or.cond39.1, label %if.then.1, label %if.end.1
 
-39:                                               ; preds = %27
-  %40 = sext i32 %31 to i64
-  %41 = sext i32 %33 to i64
-  %42 = getelementptr inbounds [1000 x [900 x i32]], [1000 x [900 x i32]]* %0, i64 0, i64 %40, i64 %41
-  %43 = load i32, i32* %42, align 4, !tbaa !5
-  %44 = icmp ne i32 %43, 0
-  %45 = zext i1 %44 to i32
-  %46 = add nsw i32 %29, %45
-  br label %47
+if.then.1:                                        ; preds = %if.end
+  %arrayidx35.1 = getelementptr inbounds nuw [1000 x [900 x i32]], ptr %grid, i32 0, i32 %sub, i32 %y
+  %3 = load i32, ptr %arrayidx35.1, align 4, !tbaa !3
+  %tobool.1 = icmp ne i32 %3, 0
+  %lnot.ext.1 = zext i1 %tobool.1 to i32
+  %add37.1 = add nuw nsw i32 %alive_num.1, %lnot.ext.1
+  br label %if.end.1
 
-47:                                               ; preds = %39, %27
-  %48 = phi i32 [ %46, %39 ], [ %29, %27 ]
-  %49 = add nuw nsw i64 %28, 1
-  %50 = icmp eq i64 %49, 8
-  br i1 %50, label %26, label %27, !llvm.loop !9
+if.end.1:                                         ; preds = %if.then.1, %if.end
+  %alive_num.1.1 = phi i32 [ %add37.1, %if.then.1 ], [ %alive_num.1, %if.end ]
+  %4 = icmp ult i32 %add, 900
+  %or.cond39.2 = select i1 %or.cond, i1 %4, i1 false
+  br i1 %or.cond39.2, label %if.then.2, label %if.end.2
+
+if.then.2:                                        ; preds = %if.end.1
+  %arrayidx35.2 = getelementptr inbounds nuw [1000 x [900 x i32]], ptr %grid, i32 0, i32 %sub, i32 %add
+  %5 = load i32, ptr %arrayidx35.2, align 4, !tbaa !3
+  %tobool.2 = icmp ne i32 %5, 0
+  %lnot.ext.2 = zext i1 %tobool.2 to i32
+  %add37.2 = add nuw nsw i32 %alive_num.1.1, %lnot.ext.2
+  br label %if.end.2
+
+if.end.2:                                         ; preds = %if.then.2, %if.end.1
+  %alive_num.1.2 = phi i32 [ %add37.2, %if.then.2 ], [ %alive_num.1.1, %if.end.1 ]
+  %or.cond.3 = icmp ult i32 %x, 1000
+  %or.cond39.3 = select i1 %or.cond.3, i1 %0, i1 false
+  br i1 %or.cond39.3, label %if.then.3, label %if.end.3
+
+if.then.3:                                        ; preds = %if.end.2
+  %arrayidx35.3 = getelementptr inbounds nuw [1000 x [900 x i32]], ptr %grid, i32 0, i32 %x, i32 %sub1
+  %6 = load i32, ptr %arrayidx35.3, align 4, !tbaa !3
+  %tobool.3 = icmp ne i32 %6, 0
+  %lnot.ext.3 = zext i1 %tobool.3 to i32
+  %add37.3 = add nuw nsw i32 %alive_num.1.2, %lnot.ext.3
+  br label %if.end.3
+
+if.end.3:                                         ; preds = %if.then.3, %if.end.2
+  %alive_num.1.3 = phi i32 [ %add37.3, %if.then.3 ], [ %alive_num.1.2, %if.end.2 ]
+  %or.cond39.4 = select i1 %or.cond.3, i1 %4, i1 false
+  br i1 %or.cond39.4, label %if.then.4, label %if.end.4
+
+if.then.4:                                        ; preds = %if.end.3
+  %arrayidx35.4 = getelementptr inbounds nuw [1000 x [900 x i32]], ptr %grid, i32 0, i32 %x, i32 %add
+  %7 = load i32, ptr %arrayidx35.4, align 4, !tbaa !3
+  %tobool.4 = icmp ne i32 %7, 0
+  %lnot.ext.4 = zext i1 %tobool.4 to i32
+  %add37.4 = add nuw nsw i32 %alive_num.1.3, %lnot.ext.4
+  br label %if.end.4
+
+if.end.4:                                         ; preds = %if.then.4, %if.end.3
+  %alive_num.1.4 = phi i32 [ %add37.4, %if.then.4 ], [ %alive_num.1.3, %if.end.3 ]
+  %or.cond.5 = icmp ult i32 %add15, 1000
+  %or.cond39.5 = select i1 %or.cond.5, i1 %0, i1 false
+  br i1 %or.cond39.5, label %if.then.5, label %if.end.5
+
+if.then.5:                                        ; preds = %if.end.4
+  %arrayidx35.5 = getelementptr inbounds nuw [1000 x [900 x i32]], ptr %grid, i32 0, i32 %add15, i32 %sub1
+  %8 = load i32, ptr %arrayidx35.5, align 4, !tbaa !3
+  %tobool.5 = icmp ne i32 %8, 0
+  %lnot.ext.5 = zext i1 %tobool.5 to i32
+  %add37.5 = add nuw nsw i32 %alive_num.1.4, %lnot.ext.5
+  br label %if.end.5
+
+if.end.5:                                         ; preds = %if.then.5, %if.end.4
+  %alive_num.1.5 = phi i32 [ %add37.5, %if.then.5 ], [ %alive_num.1.4, %if.end.4 ]
+  %or.cond39.6 = and i1 %or.cond.5, %2
+  br i1 %or.cond39.6, label %if.then.6, label %if.end.6
+
+if.then.6:                                        ; preds = %if.end.5
+  %arrayidx35.6 = getelementptr inbounds nuw [1000 x [900 x i32]], ptr %grid, i32 0, i32 %add15, i32 %y
+  %9 = load i32, ptr %arrayidx35.6, align 4, !tbaa !3
+  %tobool.6 = icmp ne i32 %9, 0
+  %lnot.ext.6 = zext i1 %tobool.6 to i32
+  %add37.6 = add nuw nsw i32 %alive_num.1.5, %lnot.ext.6
+  br label %if.end.6
+
+if.end.6:                                         ; preds = %if.then.6, %if.end.5
+  %alive_num.1.6 = phi i32 [ %add37.6, %if.then.6 ], [ %alive_num.1.5, %if.end.5 ]
+  %or.cond39.7 = select i1 %or.cond.5, i1 %4, i1 false
+  br i1 %or.cond39.7, label %if.then.7, label %if.end.7
+
+if.then.7:                                        ; preds = %if.end.6
+  %arrayidx35.7 = getelementptr inbounds nuw [1000 x [900 x i32]], ptr %grid, i32 0, i32 %add15, i32 %add
+  %10 = load i32, ptr %arrayidx35.7, align 4, !tbaa !3
+  %tobool.7 = icmp ne i32 %10, 0
+  %lnot.ext.7 = zext i1 %tobool.7 to i32
+  %add37.7 = add nuw nsw i32 %alive_num.1.6, %lnot.ext.7
+  br label %if.end.7
+
+if.end.7:                                         ; preds = %if.then.7, %if.end.6
+  %alive_num.1.7 = phi i32 [ %add37.7, %if.then.7 ], [ %alive_num.1.6, %if.end.6 ]
+  ret i32 %alive_num.1.7
 }
 
-; Function Attrs: argmemonly mustprogress nofree nosync nounwind willreturn
-declare void @llvm.lifetime.start.p0i8(i64 immarg, i8* nocapture) #1
+; Function Attrs: mustprogress nocallback nofree nosync nounwind willreturn memory(argmem: readwrite)
+declare void @llvm.lifetime.start.p0(i64 immarg, ptr nocapture) #1
 
-; Function Attrs: argmemonly mustprogress nofree nosync nounwind willreturn
-declare void @llvm.lifetime.end.p0i8(i64 immarg, i8* nocapture) #1
+; Function Attrs: mustprogress nocallback nofree nosync nounwind willreturn memory(argmem: readwrite)
+declare void @llvm.lifetime.end.p0(i64 immarg, ptr nocapture) #1
 
-; Function Attrs: mustprogress nofree norecurse nosync nounwind readnone uwtable willreturn
-define dso_local i32 @get_cell_color(i32 noundef %0) local_unnamed_addr #2 {
-  %2 = icmp slt i32 %0, 1
-  br i1 %2, label %10, label %3
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local range(i32 -16777216, 0) i32 @get_cell_color(i32 noundef %cell_val) local_unnamed_addr #2 {
+entry:
+  %cmp = icmp slt i32 %cell_val, 1
+  br i1 %cmp, label %return, label %if.else
 
-3:                                                ; preds = %1
-  %4 = add i32 %0, -1
-  %5 = icmp ult i32 %4, 3
-  br i1 %5, label %6, label %10
+if.else:                                          ; preds = %entry
+  %0 = icmp ult i32 %cell_val, 4
+  br i1 %0, label %switch.lookup, label %return
 
-6:                                                ; preds = %3
-  %7 = sext i32 %4 to i64
-  %8 = getelementptr inbounds [3 x i32], [3 x i32]* @switch.table.app, i64 0, i64 %7
-  %9 = load i32, i32* %8, align 4
-  br label %10
+switch.lookup:                                    ; preds = %if.else
+  %switch.tableidx = add nsw i32 %cell_val, -1
+  %switch.gep = getelementptr inbounds [3 x i32], ptr @switch.table.app, i32 0, i32 %switch.tableidx
+  %switch.load = load i32, ptr %switch.gep, align 4
+  br label %return
 
-10:                                               ; preds = %3, %6, %1
-  %11 = phi i32 [ -16777216, %1 ], [ %9, %6 ], [ -1, %3 ]
-  ret i32 %11
+return:                                           ; preds = %if.else, %switch.lookup, %entry
+  %retval.0 = phi i32 [ -16777216, %entry ], [ %switch.load, %switch.lookup ], [ -1, %if.else ]
+  ret i32 %retval.0
 }
 
-; Function Attrs: nounwind uwtable
+; Function Attrs: nounwind
 define dso_local void @app() local_unnamed_addr #3 {
-  %1 = alloca [8 x [2 x i32]], align 16
-  %2 = alloca [1000 x [900 x i32]], align 16
-  %3 = bitcast [1000 x [900 x i32]]* %2 to i8*
-  %4 = alloca [1000 x [900 x i32]], align 16
-  %5 = bitcast [1000 x [900 x i32]]* %4 to i8*
-  %6 = bitcast [1000 x [900 x i32]]* %2 to i8*
-  call void @llvm.lifetime.start.p0i8(i64 3600000, i8* nonnull %6) #7
-  call void @llvm.memset.p0i8.i64(i8* noundef nonnull align 16 dereferenceable(3600000) %6, i8 0, i64 3600000, i1 false)
-  br label %7
+entry:
+  %grid = alloca [1000 x [900 x i32]], align 4
+  %new_grid = alloca [1000 x [900 x i32]], align 4
+  call void @llvm.lifetime.start.p0(i64 3600000, ptr nonnull %grid) #6
+  call void @llvm.memset.p0.i32(ptr noundef nonnull align 4 dereferenceable(3600000) %grid, i8 0, i32 3600000, i1 false)
+  %0 = tail call i32 @llvm.riscvivii.simrand()
+  %rem = urem i32 %0, 3
+  %tobool.not = icmp eq i32 %rem, 0
+  %spec.select = zext i1 %tobool.not to i32
+  br label %for.cond1.preheader
 
-7:                                                ; preds = %0, %28
-  %8 = phi i64 [ 0, %0 ], [ %29, %28 ]
-  br label %31
+for.cond1.preheader:                              ; preds = %entry, %for.cond.cleanup3
+  %i.0178 = phi i32 [ 0, %entry ], [ %inc9, %for.cond.cleanup3 ]
+  br label %for.body4
 
-9:                                                ; preds = %28
-  %10 = bitcast [1000 x [900 x i32]]* %4 to i8*
-  %11 = bitcast [8 x [2 x i32]]* %1 to i8*
-  %12 = getelementptr inbounds [8 x [2 x i32]], [8 x [2 x i32]]* %1, i64 0, i64 0, i64 0
-  %13 = getelementptr inbounds [8 x [2 x i32]], [8 x [2 x i32]]* %1, i64 0, i64 0, i64 1
-  %14 = getelementptr inbounds [8 x [2 x i32]], [8 x [2 x i32]]* %1, i64 0, i64 1, i64 0
-  %15 = getelementptr inbounds [8 x [2 x i32]], [8 x [2 x i32]]* %1, i64 0, i64 1, i64 1
-  %16 = getelementptr inbounds [8 x [2 x i32]], [8 x [2 x i32]]* %1, i64 0, i64 2, i64 0
-  %17 = getelementptr inbounds [8 x [2 x i32]], [8 x [2 x i32]]* %1, i64 0, i64 2, i64 1
-  %18 = getelementptr inbounds [8 x [2 x i32]], [8 x [2 x i32]]* %1, i64 0, i64 3, i64 0
-  %19 = getelementptr inbounds [8 x [2 x i32]], [8 x [2 x i32]]* %1, i64 0, i64 3, i64 1
-  %20 = getelementptr inbounds [8 x [2 x i32]], [8 x [2 x i32]]* %1, i64 0, i64 4, i64 0
-  %21 = getelementptr inbounds [8 x [2 x i32]], [8 x [2 x i32]]* %1, i64 0, i64 4, i64 1
-  %22 = getelementptr inbounds [8 x [2 x i32]], [8 x [2 x i32]]* %1, i64 0, i64 5, i64 0
-  %23 = getelementptr inbounds [8 x [2 x i32]], [8 x [2 x i32]]* %1, i64 0, i64 5, i64 1
-  %24 = getelementptr inbounds [8 x [2 x i32]], [8 x [2 x i32]]* %1, i64 0, i64 6, i64 0
-  %25 = getelementptr inbounds [8 x [2 x i32]], [8 x [2 x i32]]* %1, i64 0, i64 6, i64 1
-  %26 = getelementptr inbounds [8 x [2 x i32]], [8 x [2 x i32]]* %1, i64 0, i64 7, i64 0
-  %27 = getelementptr inbounds [8 x [2 x i32]], [8 x [2 x i32]]* %1, i64 0, i64 7, i64 1
-  br label %41
+for.cond.cleanup3:                                ; preds = %for.body4
+  %inc9 = add nuw nsw i32 %i.0178, 1
+  %exitcond188.not = icmp eq i32 %inc9, 1000
+  br i1 %exitcond188.not, label %for.body14, label %for.cond1.preheader, !llvm.loop !7
 
-28:                                               ; preds = %31
-  %29 = add nuw nsw i64 %8, 1
-  %30 = icmp eq i64 %29, 1000
-  br i1 %30, label %9, label %7, !llvm.loop !12
+for.body4:                                        ; preds = %for.cond1.preheader, %for.body4
+  %j.0177 = phi i32 [ 0, %for.cond1.preheader ], [ %inc, %for.body4 ]
+  %1 = getelementptr inbounds nuw [1000 x [900 x i32]], ptr %grid, i32 0, i32 %i.0178, i32 %j.0177
+  store i32 %spec.select, ptr %1, align 4, !tbaa !3
+  %inc = add nuw nsw i32 %j.0177, 1
+  %exitcond.not = icmp eq i32 %inc, 900
+  br i1 %exitcond.not, label %for.cond.cleanup3, label %for.body4, !llvm.loop !9
 
-31:                                               ; preds = %7, %31
-  %32 = phi i64 [ 0, %7 ], [ %38, %31 ]
-  %33 = call i32 (...) @sim_rand() #7
-  %34 = srem i32 %33, 3
-  %35 = icmp eq i32 %34, 0
-  %36 = getelementptr inbounds [1000 x [900 x i32]], [1000 x [900 x i32]]* %2, i64 0, i64 %8, i64 %32
-  %37 = zext i1 %35 to i32
-  store i32 %37, i32* %36, align 4, !tbaa !5
-  %38 = add nuw nsw i64 %32, 1
-  %39 = icmp eq i64 %38, 900
-  br i1 %39, label %28, label %31, !llvm.loop !13
-
-40:                                               ; preds = %121
-  call void @llvm.lifetime.end.p0i8(i64 3600000, i8* nonnull %6) #7
+for.cond.cleanup13:                               ; preds = %for.cond.cleanup107
+  call void @llvm.lifetime.end.p0(i64 3600000, ptr nonnull %grid) #6
   ret void
 
-41:                                               ; preds = %9, %121
-  %42 = phi i32 [ 0, %9 ], [ %122, %121 ]
-  call void @llvm.lifetime.start.p0i8(i64 3600000, i8* nonnull %10) #7
-  call void @llvm.memcpy.p0i8.p0i8.i64(i8* noundef nonnull align 16 dereferenceable(3600000) %5, i8* noundef nonnull align 16 dereferenceable(3600000) %3, i64 3600000, i1 false), !tbaa !5
-  br label %43
+for.body14:                                       ; preds = %for.cond.cleanup3, %for.cond.cleanup107
+  %step.0187 = phi i32 [ %inc124, %for.cond.cleanup107 ], [ 0, %for.cond.cleanup3 ]
+  call void @llvm.lifetime.start.p0(i64 3600000, ptr nonnull %new_grid) #6
+  call void @llvm.memcpy.p0.p0.i32(ptr noundef nonnull align 4 dereferenceable(3600000) %new_grid, ptr noundef nonnull align 4 dereferenceable(3600000) %grid, i32 3600000, i1 false), !tbaa !3
+  br label %for.cond41.preheader
 
-43:                                               ; preds = %41, %55
-  %44 = phi i64 [ 0, %41 ], [ %46, %55 ]
-  %45 = add nsw i64 %44, -1
-  %46 = add nuw nsw i64 %44, 1
-  %47 = trunc i64 %45 to i32
-  %48 = trunc i64 %45 to i32
-  %49 = trunc i64 %45 to i32
-  %50 = trunc i64 %44 to i32
-  %51 = trunc i64 %44 to i32
-  %52 = trunc i64 %46 to i32
-  %53 = trunc i64 %46 to i32
-  %54 = trunc i64 %46 to i32
-  br label %58
+for.cond41.preheader:                             ; preds = %for.body14, %for.cond.cleanup43
+  %i35.0182 = phi i32 [ %inc82, %for.cond.cleanup43 ], [ 0, %for.body14 ]
+  br label %for.body44
 
-55:                                               ; preds = %116
-  %56 = icmp eq i64 %46, 1000
-  br i1 %56, label %57, label %43, !llvm.loop !14
+for.cond.cleanup43:                               ; preds = %if.end77
+  %inc82 = add nuw nsw i32 %i35.0182, 1
+  %exitcond191.not = icmp eq i32 %inc82, 1000
+  br i1 %exitcond191.not, label %for.cond90.preheader.preheader, label %for.cond41.preheader, !llvm.loop !10
 
-57:                                               ; preds = %55
-  call void @llvm.memcpy.p0i8.p0i8.i64(i8* noundef nonnull align 16 dereferenceable(3600000) %3, i8* noundef nonnull align 16 dereferenceable(3600000) %5, i64 3600000, i1 false), !tbaa !5
-  br label %118
+for.cond90.preheader.preheader:                   ; preds = %for.cond.cleanup43
+  call void @llvm.memcpy.p0.p0.i32(ptr noundef nonnull align 4 dereferenceable(3600000) %grid, ptr noundef nonnull align 4 dereferenceable(3600000) %new_grid, i32 3600000, i1 false), !tbaa !3
+  br label %for.cond110.preheader
 
-58:                                               ; preds = %43, %116
-  %59 = phi i64 [ 0, %43 ], [ %65, %116 ]
-  %60 = getelementptr inbounds [1000 x [900 x i32]], [1000 x [900 x i32]]* %2, i64 0, i64 %44, i64 %59
-  %61 = load i32, i32* %60, align 4, !tbaa !5
-  call void @llvm.lifetime.start.p0i8(i64 64, i8* nonnull %11) #7
-  store i32 %47, i32* %12, align 16, !tbaa !5
-  %62 = add nsw i64 %59, -1
-  %63 = trunc i64 %62 to i32
-  store i32 %63, i32* %13, align 4, !tbaa !5
-  store i32 %48, i32* %14, align 8, !tbaa !5
-  %64 = trunc i64 %59 to i32
-  store i32 %64, i32* %15, align 4, !tbaa !5
-  store i32 %49, i32* %16, align 16, !tbaa !5
-  %65 = add nuw nsw i64 %59, 1
-  %66 = trunc i64 %65 to i32
-  store i32 %66, i32* %17, align 4, !tbaa !5
-  store i32 %50, i32* %18, align 8, !tbaa !5
-  %67 = trunc i64 %62 to i32
-  store i32 %67, i32* %19, align 4, !tbaa !5
-  store i32 %51, i32* %20, align 16, !tbaa !5
-  %68 = trunc i64 %65 to i32
-  store i32 %68, i32* %21, align 4, !tbaa !5
-  store i32 %52, i32* %22, align 8, !tbaa !5
-  %69 = trunc i64 %62 to i32
-  store i32 %69, i32* %23, align 4, !tbaa !5
-  store i32 %53, i32* %24, align 16, !tbaa !5
-  %70 = trunc i64 %59 to i32
-  store i32 %70, i32* %25, align 4, !tbaa !5
-  store i32 %54, i32* %26, align 8, !tbaa !5
-  %71 = trunc i64 %65 to i32
-  store i32 %71, i32* %27, align 4, !tbaa !5
-  br label %72
+for.body44:                                       ; preds = %for.cond41.preheader, %if.end77
+  %j40.0181 = phi i32 [ 0, %for.cond41.preheader ], [ %inc79, %if.end77 ]
+  %arrayidx46 = getelementptr inbounds nuw [1000 x [900 x i32]], ptr %grid, i32 0, i32 %i35.0182, i32 %j40.0181
+  %2 = load i32, ptr %arrayidx46, align 4, !tbaa !3
+  %call = call i32 @get_alive_neighbours(ptr noundef nonnull %grid, i32 noundef %i35.0182, i32 noundef %j40.0181)
+  %tobool47 = icmp ne i32 %2, 0
+  %cmp48 = icmp samesign ult i32 %call, 2
+  %or.cond = select i1 %tobool47, i1 %cmp48, i1 false
+  br i1 %or.cond, label %if.end77.sink.split, label %if.else52
 
-72:                                               ; preds = %92, %58
-  %73 = phi i64 [ 0, %58 ], [ %94, %92 ]
-  %74 = phi i32 [ 0, %58 ], [ %93, %92 ]
-  %75 = getelementptr inbounds [8 x [2 x i32]], [8 x [2 x i32]]* %1, i64 0, i64 %73, i64 0
-  %76 = load i32, i32* %75, align 8, !tbaa !5
-  %77 = getelementptr inbounds [8 x [2 x i32]], [8 x [2 x i32]]* %1, i64 0, i64 %73, i64 1
-  %78 = load i32, i32* %77, align 4, !tbaa !5
-  %79 = icmp ult i32 %76, 1000
-  %80 = icmp sgt i32 %78, -1
-  %81 = select i1 %79, i1 %80, i1 false
-  %82 = icmp slt i32 %78, 900
-  %83 = select i1 %81, i1 %82, i1 false
-  br i1 %83, label %84, label %92
+if.else52:                                        ; preds = %for.body44
+  %3 = and i32 %call, 14
+  %or.cond126 = icmp eq i32 %3, 2
+  %or.cond176 = select i1 %tobool47, i1 %or.cond126, i1 false
+  br i1 %or.cond176, label %if.then57, label %if.else60
 
-84:                                               ; preds = %72
-  %85 = sext i32 %76 to i64
-  %86 = sext i32 %78 to i64
-  %87 = getelementptr inbounds [1000 x [900 x i32]], [1000 x [900 x i32]]* %2, i64 0, i64 %85, i64 %86
-  %88 = load i32, i32* %87, align 4, !tbaa !5
-  %89 = icmp ne i32 %88, 0
-  %90 = zext i1 %89 to i32
-  %91 = add nsw i32 %74, %90
-  br label %92
+if.then57:                                        ; preds = %if.else52
+  %add = add nsw i32 %2, 1
+  br label %if.end77.sink.split
 
-92:                                               ; preds = %84, %72
-  %93 = phi i32 [ %91, %84 ], [ %74, %72 ]
-  %94 = add nuw nsw i64 %73, 1
-  %95 = icmp eq i64 %94, 8
-  br i1 %95, label %96, label %72, !llvm.loop !9
+if.else60:                                        ; preds = %if.else52
+  %cmp63 = icmp samesign ugt i32 %call, 3
+  %or.cond127 = select i1 %tobool47, i1 %cmp63, i1 false
+  br i1 %or.cond127, label %if.end77.sink.split, label %if.else67
 
-96:                                               ; preds = %92
-  call void @llvm.lifetime.end.p0i8(i64 64, i8* nonnull %11) #7
-  %97 = icmp ne i32 %61, 0
-  %98 = icmp slt i32 %93, 2
-  %99 = select i1 %97, i1 %98, i1 false
-  br i1 %99, label %113, label %100
+if.else67:                                        ; preds = %if.else60
+  %tobool68 = icmp eq i32 %2, 0
+  %cmp70 = icmp eq i32 %call, 3
+  %or.cond128 = select i1 %tobool68, i1 %cmp70, i1 false
+  br i1 %or.cond128, label %if.end77.sink.split, label %if.end77
 
-100:                                              ; preds = %96
-  %101 = and i32 %93, -2
-  %102 = icmp eq i32 %101, 2
-  %103 = select i1 %97, i1 %102, i1 false
-  br i1 %103, label %104, label %106
+if.end77.sink.split:                              ; preds = %if.else67, %if.else60, %for.body44, %if.then57
+  %add.sink = phi i32 [ %add, %if.then57 ], [ 0, %for.body44 ], [ 0, %if.else60 ], [ 1, %if.else67 ]
+  %arrayidx59 = getelementptr inbounds nuw [1000 x [900 x i32]], ptr %new_grid, i32 0, i32 %i35.0182, i32 %j40.0181
+  store i32 %add.sink, ptr %arrayidx59, align 4, !tbaa !3
+  br label %if.end77
 
-104:                                              ; preds = %100
-  %105 = add nsw i32 %61, 1
-  br label %113
+if.end77:                                         ; preds = %if.end77.sink.split, %if.else67
+  %inc79 = add nuw nsw i32 %j40.0181, 1
+  %exitcond190.not = icmp eq i32 %inc79, 900
+  br i1 %exitcond190.not, label %for.cond.cleanup43, label %for.body44, !llvm.loop !11
 
-106:                                              ; preds = %100
-  %107 = icmp sgt i32 %93, 3
-  %108 = select i1 %97, i1 %107, i1 false
-  br i1 %108, label %113, label %109
+for.cond110.preheader:                            ; preds = %for.cond90.preheader.preheader, %for.cond.cleanup112
+  %i104.0186 = phi i32 [ %inc121, %for.cond.cleanup112 ], [ 0, %for.cond90.preheader.preheader ]
+  br label %for.body113
 
-109:                                              ; preds = %106
-  %110 = icmp eq i32 %61, 0
-  %111 = icmp eq i32 %93, 3
-  %112 = select i1 %110, i1 %111, i1 false
-  br i1 %112, label %113, label %116
+for.cond.cleanup107:                              ; preds = %for.cond.cleanup112
+  tail call void @llvm.riscvivii.flush()
+  call void @llvm.lifetime.end.p0(i64 3600000, ptr nonnull %new_grid) #6
+  %inc124 = add nuw nsw i32 %step.0187, 1
+  %exitcond195.not = icmp eq i32 %inc124, 100
+  br i1 %exitcond195.not, label %for.cond.cleanup13, label %for.body14, !llvm.loop !12
 
-113:                                              ; preds = %109, %106, %96, %104
-  %114 = phi i32 [ %105, %104 ], [ 0, %96 ], [ 0, %106 ], [ 1, %109 ]
-  %115 = getelementptr inbounds [1000 x [900 x i32]], [1000 x [900 x i32]]* %4, i64 0, i64 %44, i64 %59
-  store i32 %114, i32* %115, align 4, !tbaa !5
-  br label %116
+for.cond.cleanup112:                              ; preds = %get_cell_color.exit
+  %inc121 = add nuw nsw i32 %i104.0186, 1
+  %exitcond194.not = icmp eq i32 %inc121, 1000
+  br i1 %exitcond194.not, label %for.cond.cleanup107, label %for.cond110.preheader, !llvm.loop !13
 
-116:                                              ; preds = %113, %109
-  %117 = icmp eq i64 %65, 900
-  br i1 %117, label %55, label %58, !llvm.loop !15
+for.body113:                                      ; preds = %for.cond110.preheader, %get_cell_color.exit
+  %j109.0185 = phi i32 [ 0, %for.cond110.preheader ], [ %inc118, %get_cell_color.exit ]
+  %arrayidx115 = getelementptr inbounds nuw [1000 x [900 x i32]], ptr %grid, i32 0, i32 %i104.0186, i32 %j109.0185
+  %4 = load i32, ptr %arrayidx115, align 4, !tbaa !3
+  %cmp.i = icmp slt i32 %4, 1
+  br i1 %cmp.i, label %get_cell_color.exit, label %if.else.i
 
-118:                                              ; preds = %57, %124
-  %119 = phi i64 [ 0, %57 ], [ %125, %124 ]
-  %120 = trunc i64 %119 to i32
-  br label %127
+if.else.i:                                        ; preds = %for.body113
+  %5 = icmp ult i32 %4, 4
+  br i1 %5, label %switch.lookup, label %get_cell_color.exit
 
-121:                                              ; preds = %124
-  call void (...) @screen_flush() #7
-  call void @llvm.lifetime.end.p0i8(i64 3600000, i8* nonnull %10) #7
-  %122 = add nuw nsw i32 %42, 1
-  %123 = icmp eq i32 %122, 100
-  br i1 %123, label %40, label %41, !llvm.loop !16
+switch.lookup:                                    ; preds = %if.else.i
+  %switch.tableidx = add nsw i32 %4, -1
+  %switch.gep = getelementptr inbounds [3 x i32], ptr @switch.table.app, i32 0, i32 %switch.tableidx
+  %switch.load = load i32, ptr %switch.gep, align 4
+  br label %get_cell_color.exit
 
-124:                                              ; preds = %139
-  %125 = add nuw nsw i64 %119, 1
-  %126 = icmp eq i64 %125, 1000
-  br i1 %126, label %121, label %118, !llvm.loop !17
-
-127:                                              ; preds = %118, %139
-  %128 = phi i64 [ 0, %118 ], [ %142, %139 ]
-  %129 = getelementptr inbounds [1000 x [900 x i32]], [1000 x [900 x i32]]* %2, i64 0, i64 %119, i64 %128
-  %130 = load i32, i32* %129, align 4, !tbaa !5
-  %131 = icmp slt i32 %130, 1
-  br i1 %131, label %139, label %132
-
-132:                                              ; preds = %127
-  %133 = add i32 %130, -1
-  %134 = icmp ult i32 %133, 3
-  br i1 %134, label %135, label %139
-
-135:                                              ; preds = %132
-  %136 = sext i32 %133 to i64
-  %137 = getelementptr inbounds [3 x i32], [3 x i32]* @switch.table.app, i64 0, i64 %136
-  %138 = load i32, i32* %137, align 4
-  br label %139
-
-139:                                              ; preds = %132, %135, %127
-  %140 = phi i32 [ -16777216, %127 ], [ %138, %135 ], [ -1, %132 ]
-  %141 = trunc i64 %128 to i32
-  call void @screen_put_pixel(i32 noundef %120, i32 noundef %141, i32 noundef %140) #7
-  %142 = add nuw nsw i64 %128, 1
-  %143 = icmp eq i64 %142, 900
-  br i1 %143, label %124, label %127, !llvm.loop !18
+get_cell_color.exit:                              ; preds = %if.else.i, %switch.lookup, %for.body113
+  %retval.0.i = phi i32 [ -16777216, %for.body113 ], [ %switch.load, %switch.lookup ], [ -1, %if.else.i ]
+  tail call void @llvm.riscvivii.putpixel(i32 %i104.0186, i32 %j109.0185, i32 %retval.0.i)
+  %inc118 = add nuw nsw i32 %j109.0185, 1
+  %exitcond193.not = icmp eq i32 %inc118, 900
+  br i1 %exitcond193.not, label %for.cond.cleanup112, label %for.body113, !llvm.loop !14
 }
 
-; Function Attrs: argmemonly mustprogress nofree nounwind willreturn writeonly
-declare void @llvm.memset.p0i8.i64(i8* nocapture writeonly, i8, i64, i1 immarg) #4
+; Function Attrs: mustprogress nocallback nofree nounwind willreturn memory(argmem: write)
+declare void @llvm.memset.p0.i32(ptr nocapture writeonly, i8, i32, i1 immarg) #4
 
-declare i32 @sim_rand(...) local_unnamed_addr #5
+; Function Attrs: nofree nosync nounwind memory(none)
+declare i32 @llvm.riscvivii.simrand() #5
 
-declare void @screen_put_pixel(i32 noundef, i32 noundef, i32 noundef) local_unnamed_addr #5
+; Function Attrs: nounwind
+declare void @llvm.riscvivii.putpixel(i32, i32, i32) #6
 
-declare void @screen_flush(...) local_unnamed_addr #5
+; Function Attrs: nounwind
+declare void @llvm.riscvivii.flush() #6
 
-; Function Attrs: argmemonly nofree nounwind willreturn
-declare void @llvm.memcpy.p0i8.p0i8.i64(i8* noalias nocapture writeonly, i8* noalias nocapture readonly, i64, i1 immarg) #6
+; Function Attrs: nocallback nofree nounwind willreturn memory(argmem: readwrite)
+declare void @llvm.memcpy.p0.p0.i32(ptr noalias nocapture writeonly, ptr noalias nocapture readonly, i32, i1 immarg) #7
 
-attributes #0 = { nofree nosync nounwind readonly uwtable "frame-pointer"="none" "min-legal-vector-width"="0" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }
-attributes #1 = { argmemonly mustprogress nofree nosync nounwind willreturn }
-attributes #2 = { mustprogress nofree norecurse nosync nounwind readnone uwtable willreturn "frame-pointer"="none" "min-legal-vector-width"="0" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }
-attributes #3 = { nounwind uwtable "frame-pointer"="none" "min-legal-vector-width"="0" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }
-attributes #4 = { argmemonly mustprogress nofree nounwind willreturn writeonly }
-attributes #5 = { "frame-pointer"="none" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }
-attributes #6 = { argmemonly nofree nounwind willreturn }
-attributes #7 = { nounwind }
+attributes #0 = { mustprogress nofree norecurse nosync nounwind willreturn memory(argmem: read) "frame-pointer"="all" "no-trapping-math"="true" "stack-protector-buffer-size"="8" }
+attributes #1 = { mustprogress nocallback nofree nosync nounwind willreturn memory(argmem: readwrite) }
+attributes #2 = { mustprogress nofree norecurse nosync nounwind willreturn memory(none) "frame-pointer"="all" "no-trapping-math"="true" "stack-protector-buffer-size"="8" }
+attributes #3 = { nounwind "frame-pointer"="all" "no-trapping-math"="true" "stack-protector-buffer-size"="8" }
+attributes #4 = { mustprogress nocallback nofree nounwind willreturn memory(argmem: write) }
+attributes #5 = { nofree nosync nounwind memory(none) }
+attributes #6 = { nounwind }
+attributes #7 = { nocallback nofree nounwind willreturn memory(argmem: readwrite) }
 
-!llvm.module.flags = !{!0, !1, !2, !3}
-!llvm.ident = !{!4}
+!llvm.module.flags = !{!0, !1}
+!llvm.ident = !{!2}
 
-!0 = !{i32 1, !"wchar_size", i32 4}
-!1 = !{i32 7, !"PIC Level", i32 2}
-!2 = !{i32 7, !"PIE Level", i32 2}
-!3 = !{i32 7, !"uwtable", i32 1}
-!4 = !{!"Ubuntu clang version 14.0.0-1ubuntu1.1"}
-!5 = !{!6, !6, i64 0}
-!6 = !{!"int", !7, i64 0}
-!7 = !{!"omnipotent char", !8, i64 0}
-!8 = !{!"Simple C/C++ TBAA"}
-!9 = distinct !{!9, !10, !11}
-!10 = !{!"llvm.loop.mustprogress"}
-!11 = !{!"llvm.loop.unroll.disable"}
-!12 = distinct !{!12, !10, !11}
-!13 = distinct !{!13, !10, !11}
-!14 = distinct !{!14, !10, !11}
-!15 = distinct !{!15, !10, !11}
-!16 = distinct !{!16, !10, !11}
-!17 = distinct !{!17, !10, !11}
-!18 = distinct !{!18, !10, !11}
+!0 = !{i32 1, !"wchar_size", i32 1}
+!1 = !{i32 7, !"frame-pointer", i32 2}
+!2 = !{!"clang version 20.1.0 (git@github.com:aleksplast/llvm-project.git ee2190a69719c70e605511addb70fc532ee10caf)"}
+!3 = !{!4, !4, i64 0}
+!4 = !{!"int", !5, i64 0}
+!5 = !{!"omnipotent char", !6, i64 0}
+!6 = !{!"Simple C/C++ TBAA"}
+!7 = distinct !{!7, !8}
+!8 = !{!"llvm.loop.mustprogress"}
+!9 = distinct !{!9, !8}
+!10 = distinct !{!10, !8}
+!11 = distinct !{!11, !8}
+!12 = distinct !{!12, !8}
+!13 = distinct !{!13, !8}
+!14 = distinct !{!14, !8}
